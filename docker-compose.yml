@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./init/create_databases.sql:/docker-entrypoint-initdb.d/create_databases.sql
+      - ~/docker/postgres/hasher:/var/lib/postgresql/data
+    restart: always
+    ports:
+      - 5432:5432
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+  rest:
+    image: bostongene
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    ports:
+      - 8000:8000
+    volumes:
+      - ./cfg/rest.docker.py:/code/cfg/rest.docker.py
+      - ./media:/media/
+  worker:
+    image: bostongene
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    volumes:
+      - ./cfg/rest.docker.py:/code/cfg/rest.docker.py
+      - ./media:/media/
+    command: celery -A celery_app worker --loglevel=INFO
+
+volumes:
+  media:
