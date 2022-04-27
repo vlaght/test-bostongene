@@ -17,6 +17,18 @@ services:
     restart: always
     ports:
       - 6379:6379
+  worker:
+    image: bostongene
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    volumes:
+      - ./cfg/rest.docker.py:/code/cfg/rest.py
+      - ./media:/media/
+    command: celery -A celery_app worker --loglevel=INFO
+    depends_on:
+      - db
+      - redis
   rest:
     image: bostongene
     build:
@@ -24,18 +36,13 @@ services:
       context: ./
     ports:
       - 8000:8000
+    depends_on:
+      - db
+      - redis
+      - worker
     volumes:
-      - ./cfg/rest.docker.py:/code/cfg/rest.docker.py
+      - ./cfg/rest.docker.py:/code/cfg/rest.py
       - ./media:/media/
-  worker:
-    image: bostongene
-    build:
-      dockerfile: ./Dockerfile
-      context: ./
-    volumes:
-      - ./cfg/rest.docker.py:/code/cfg/rest.docker.py
-      - ./media:/media/
-    command: celery -A celery_app worker --loglevel=INFO
 
 volumes:
   media:

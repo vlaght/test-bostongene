@@ -1,18 +1,12 @@
-import os
-import logging
 import hashlib
+import logging
 
+from celery import Celery
 from sqlalchemy import create_engine
 
-from cfg.rest import DATABASE_URLS
-from cfg.rest import CELERY_BROKER_URL
-from cfg.rest import CELERY_RESULT_BACKEND
+from cfg.rest import CELERY_BROKER_URL, CELERY_RESULT_BACKEND, DATABASE_URLS
 from core.exceptions import ObjectNotFound
-
-from models.files import File
-from models.files import ProcessingStatus
-from celery import Celery
-
+from models.files import File, ProcessingStatus
 
 celery = Celery(
     __name__,

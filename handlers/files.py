@@ -6,8 +6,8 @@ from typing import Optional
 import aiofiles
 from fastapi import APIRouter, HTTPException, Path, Query, UploadFile
 
-from cfg.rest import MEDIA_PATH
 from celery_app import calculate_md5
+from cfg.rest import MEDIA_PATH
 from core.files import FilesCore as core
 from schemas.files import FileItemSchema, FilePageSchema
 

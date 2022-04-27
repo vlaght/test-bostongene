@@ -7,4 +7,7 @@ RUN pip install --upgrade pip && pip install poetry
 RUN poetry config virtualenvs.create false \
     && poetry install --no-dev --no-interaction --no-ansi
 
-CMD python3.9 -m uvicorn rest:app --reload
+VOLUME ["/media"]
+ENV PYTHONUNBUFFERED 1
+EXPOSE 8000
+CMD python3.9 -m uvicorn rest:app --reload --host 0.0.0.0 --port 8000

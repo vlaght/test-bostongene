@@ -11,6 +11,7 @@ class FileItemSchema(BaseModel):
     path: str
     size: int
     status: str
+    md5: str = None
     created_dt: datetime.datetime
     updated_dt: datetime.datetime
 
