@@ -18,6 +18,8 @@ router = APIRouter()
 @router.post("/files", response_model=FileItemSchema)
 async def create(file: UploadFile):
     logger.info('got file %s', file.filename)
+    if not os.path.exists(MEDIA_PATH):
+        os.mkdir(MEDIA_PATH)
     random_name = str(uuid.uuid4().hex)
     out_path = os.path.join(MEDIA_PATH, random_name)
     file_size = 0

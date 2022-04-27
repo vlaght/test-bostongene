@@ -17,7 +17,7 @@ services:
     restart: always
     ports:
       - 6379:6379
-  worker:
+  worker1:
     image: bostongene
     build:
       dockerfile: ./Dockerfile
@@ -41,7 +41,7 @@ services:
     depends_on:
       - db
       - redis
-      - worker
+      - worker1
     volumes:
       - ./cfg/rest.docker.py:/code/cfg/rest.py
       - ./media:/media/
